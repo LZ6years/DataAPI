@@ -1,0 +1,8 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory `/project/public'
+g++ -c -o lib_public.a _public.cpp #-std=c++11
+g++ -fPIC -shared -o lib_public.so _public.cpp #-std=c++11
+gcc -c -o libftp.a ftplib.c #-std=c++11
+gcc -fPIC -shared -o libftp.so ftplib.c #-std=c++11
+make: Leaving directory `/project/public'
+ 

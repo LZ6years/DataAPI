@@ -1,0 +1,83 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        // --- Server ---
+        {
+            "name": "Server (gdb) launch",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "/home/lz6years/backend/myproject/tools/demo/demo04", // ← 改成你的服务器可执行文件
+            "args": [
+                "5005",
+                "/home/lz6years/backend/log/idc/demo04.log"
+            ], // 你的运行参数（示例：端口、日志路径）
+            "cwd": "${workspaceFolder}",
+            "MIMode": "gdb",
+            // "externalConsole": true, // 给 Server 开独立终端，避免和 Client 的 I/O 混在一起
+            "stopAtEntry": false, // 如果想在 main 停住便于等 Client，设 true
+            "setupCommands": [
+                {
+                    "description": "Pretty printing",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Intel assembly",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                },
+                // —— 关键：fork 后跟踪子进程（服务器常见：accept/fork 模式）——
+                {
+                    "description": "Follow child after fork",
+                    "text": "-gdb-set follow-fork-mode child",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Keep both sides on fork",
+                    "text": "-gdb-set detach-on-fork off",
+                    "ignoreFailures": true
+                }
+            ]
+            // 可选：让 gdb 在共享库加载事件上不要停
+            // , "launchCompleteCommand": "exec-run"
+        },
+        // --- Client ---
+        {
+            "name": "Client (gdb) launch",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "/home/lz6years/backend/myproject/tools/demo/demo03", // ← 改成你的客户端可执行文件
+            "args": [
+                "localhost",
+                "5005"
+            ], // 你的运行参数（示例：目标地址、端口）
+            "cwd": "${workspaceFolder}",
+            "MIMode": "gdb",
+            // "externalConsole": true, // 独立终端，便于交互/观察
+            "stopAtEntry": false,
+            "setupCommands": [
+                {
+                    "description": "Pretty printing",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Intel assembly",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+    ],
+    // 一键同时启动两个目标
+    "compounds": [
+        {
+            "name": "Server + Client (gdb)",
+            "configurations": [
+                "Server (gdb) launch",
+                "Client (gdb) launch"
+            ],
+            "stopAll": true // 任一结束时同时停掉另一个
+        }
+    ]
+}

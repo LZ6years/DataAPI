@@ -1,0 +1,13 @@
+<?xml version='1.0' encoding='utf-8'?>
+
+<!--该参数文件存放了共享平台的入库参数。-->
+<!-- 
+  filename: 匹配的xml文件格式
+  tname: 匹配的表名
+  uptbz: 更新标志：1-更新; 2-不更新;
+  execsql: 处理xml文件之前，执行的SQL语句
+-->
+<xmltodb>
+  <filename>ZHOBTCODE_*.XML</filename><tname>T_ZHOBTCODE1</tname><uptbz>2</uptbz><execsql>delete from T_ZHOBTCODE1</execsql></endl>
+  <filename>ZHOBTMIND_*.XML</filename><tname>T_ZHOBTMIND1</tname><uptbz>1</uptbz></endl>
+</xmltodb>
